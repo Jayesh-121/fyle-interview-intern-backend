@@ -27,7 +27,7 @@ def authenticate_principal(func):
         assertions.assert_auth(p_str is not None, 'principal not found')
         p_dict = json.loads(p_str)
         p = AuthPrincipal(
-            user_id=p_dict['user_id'],
+            user_id=p_dict.get('user_id'),
             student_id=p_dict.get('student_id'),
             teacher_id=p_dict.get('teacher_id'),
             principal_id=p_dict.get('principal_id')

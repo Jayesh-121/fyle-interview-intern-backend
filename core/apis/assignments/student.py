@@ -3,6 +3,7 @@ from core import db
 from core.apis import decorators
 from core.apis.responses import APIResponse
 from core.models.assignments import Assignment
+from core.libs import assertions
 
 from .schema import AssignmentSchema, AssignmentSubmitSchema
 student_assignments_resources = Blueprint('student_assignments_resources', __name__)
@@ -22,10 +23,12 @@ def list_assignments(p):
 @decorators.authenticate_principal
 def upsert_assignment(p, incoming_payload):
     """Create or Edit an assignment"""
+    print("incoming", incoming_payload)
+    assertions.assert_valid("content" in incoming_payload,'Cannot POST assignment without content')
+    assertions.assert_valid(incoming_payload.get("content") != None,'Cannot POST assignment with empty content')
     assignment = AssignmentSchema().load(incoming_payload)
     assignment.student_id = p.student_id
-
-    upserted_assignment = Assignment.upsert(assignment)
+    upserted_assignment = Assignment.upsert(assignment, p)
     db.session.commit()
     upserted_assignment_dump = AssignmentSchema().dump(upserted_assignment)
     return APIResponse.respond(data=upserted_assignment_dump)
