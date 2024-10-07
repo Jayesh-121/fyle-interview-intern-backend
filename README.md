@@ -59,10 +59,14 @@ pytest -vvv -s tests/
 
 ### Start server using docker
 ```
-A dockerFile is included which allows creation of a docker image. This perfoms the same actions that are done via gunicorn_config.py and also ensures the DB is cleaned on each run.
-#### To create a Docker image run:
+A dockerFile is included which allows creation of a docker image.
+This perfoms the same actions that are done via gunicorn_config.py and also ensures the DB is cleaned on each run.
+
+To create a Docker image run:
 [sudo] docker build -t fyle-app .
-#### To run the docker image run:
-sudo docker run -d -p 7755:7755 fyle-app
+
+To run the docker image run:
+[sudo] docker run -d -p 7755:7755 fyle-app
+```
 
 The application will now be accessible on port 7755.
